@@ -1,0 +1,1314 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 14.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     52695,       1306]
+NotebookOptionsPosition[     48793,       1211]
+NotebookOutlinePosition[     49331,       1231]
+CellTagsIndexPosition[     49288,       1228]
+WindowTitle->NGW \:9010\:6B65\:9A8C\:8BC1
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["NGW 30-DOF \:6a21\:578b \[CenterDot] \:9010\:6b65\:9a8c\:8bc1", "Title",
+ CellID->1800417075,ExpressionUUID->"a1764f0c-2859-144a-ba6c-d614d3959df5"],
+
+Cell[CellGroupData[{
+
+Cell["Step 1 \[CenterDot] \:8fd0\:52a8\:5b66\:95ed\:5f0f\:89e3\:ff08Willis \
+\:65b9\:7a0b\:ff09\[LongDash] V1", "Section",
+ CellID->926149930,ExpressionUUID->"9e51be3b-5649-0345-9e1d-abe4f9f40ed6"],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+ClearAll[ws, wc, wp, zs, zp, zr, n];
+willis = (ws - wc) zs + (0 - wc) zr == 0;
+iExpr = Simplify[ws/wc /. Solve[willis, ws][[1]]];
+wpSol = Simplify[wp /. Solve[(wp - wc) zp == -(ws - wc) zs, wp][[1]]];
+rS = Simplify[wpSol/ws /. ws -> iExpr wc];
+rC = Simplify[wpSol/wc /. ws -> iExpr wc];
+cong = zr -> zs + 2 zp;
+num = {zs -> 24, zp -> 18, zr -> 60};
+fmExpr = Simplify[(n/60) zs (1 - 1/iExpr)];
+Print[Column[{
+   Style[\"Willis \:65b9\:7a0b\:ff08\:5185\:9f7f\:5708\:56fa\:5b9a \[Omega]r \
+= 0\:ff09\", Bold, 12],
+   Row[{\"i = \[Omega]s/\[Omega]c = \", iExpr}],
+   Row[{\"\[Omega]p/\[Omega]s = \", rS, \"   \[RightArrow]   \", Simplify[rS \
+/. cong], \"   (\:7528\:540c\:5fc3\:6761\:4ef6)\"}],
+   Row[{\"\[Omega]p/\[Omega]c = \", rC, \"   \[RightArrow]   \", Simplify[rC \
+/. cong]}],
+   \"\",
+   Row[{\"\:4ee3\:5165 zs=24, zp=18, zr=60 :  i = \", N[iExpr /. num, 10],
+     \" ,  \[Omega]p/\[Omega]s = \", N[Simplify[rS /. cong] /. num, 10], \" , \
+ \[Omega]p/\[Omega]c = \",
+     N[Simplify[rC /. cong] /. num, 10]}],
+   Row[{\"NGW_test \:671f\:671b :  i = 3.5 ,  \[Omega]p/\[Omega]s = \
+-0.66666667\"}],
+   \"\",
+   Row[{\"f_mesh = (n/60)\[CenterDot]zs\[CenterDot](1-1/i) = \", fmExpr}],
+   Row[{\"n = 500  r/min \[RightArrow] \", fmExpr /. num /. n -> 500, \" = \",
+     N[fmExpr /. num /. n -> 500, 10], \" Hz\"}],
+   Row[{\"n = 1500 r/min \[RightArrow] \", N[fmExpr /. num /. n -> 1500, 10], \
+\" Hz  (\:65e7\:57fa\:7ebf 428.5714)\"}]}]];\
+\>", "Input",
+ CellLabel->"In[145]:=",
+ CellID->1650021772,ExpressionUUID->"ab7b1fa1-b620-ac44-a355-f4575fdfbfc1"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     StyleBox["\<\"Willis \:65b9\:7a0b\:ff08\:5185\:9f7f\:5708\:56fa\:5b9a \
+\[Omega]r = 0\:ff09\"\>",
+      StripOnInput->False,
+      FontSize->12,
+      FontWeight->Bold]},
+    {
+     TemplateBox[{"\"i = \[Omega]s/\[Omega]c = \"", 
+       FractionBox[
+        RowBox[{"zr", "+", "zs"}], "zs"]},
+      "RowDefault"]},
+    {
+     TemplateBox[{"\"\[Omega]p/\[Omega]s = \"", 
+       FractionBox[
+        RowBox[{
+          RowBox[{"(", 
+            RowBox[{"zp", "-", "zr"}], ")"}], " ", "zs"}], 
+        RowBox[{"zp", " ", 
+          RowBox[{"(", 
+            RowBox[{"zr", "+", "zs"}], ")"}]}]], "\"   \[RightArrow]   \"", 
+       RowBox[{"-", 
+         FractionBox["zs", 
+          RowBox[{"2", " ", "zp"}]]}], 
+       "\"   (\:7528\:540c\:5fc3\:6761\:4ef6)\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{"\"\[Omega]p/\[Omega]c = \"", 
+       RowBox[{"1", "-", 
+         FractionBox["zr", "zp"]}], "\"   \[RightArrow]   \"", 
+       RowBox[{"-", 
+         FractionBox[
+          RowBox[{"zp", "+", "zs"}], "zp"]}]},
+      "RowDefault"]},
+    {"\<\"\"\>"},
+    {
+     TemplateBox[{
+      "\"\:4ee3\:5165 zs=24, zp=18, zr=60 :  i = \"", "3.5`10.", 
+       "\" ,  \[Omega]p/\[Omega]s = \"", 
+       RowBox[{"-", "0.66666666666666666666666666666666666667`10."}], 
+       "\" ,  \[Omega]p/\[Omega]c = \"", 
+       RowBox[{"-", "2.33333333333333333333333333333333333333`10."}]},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"NGW_test \:671f\:671b :  i = 3.5 ,  \[Omega]p/\[Omega]s = \
+-0.66666667\""},
+      "RowDefault"]},
+    {"\<\"\"\>"},
+    {
+     TemplateBox[{"\"f_mesh = (n/60)\[CenterDot]zs\[CenterDot](1-1/i) = \"", 
+       FractionBox[
+        RowBox[{"n", " ", "zr", " ", "zs"}], 
+        RowBox[{"60", " ", 
+          RowBox[{"(", 
+            RowBox[{"zr", "+", "zs"}], ")"}]}]]},
+      "RowDefault"]},
+    {
+     TemplateBox[{"\"n = 500  r/min \[RightArrow] \"", 
+       FractionBox["1000", "7"], "\" = \"", "142.8571428571428571429`10.", 
+       "\" Hz\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"n = 1500 r/min \[RightArrow] \"", "428.5714285714285714286`10.", 
+       "\" Hz  (\:65e7\:57fa\:7ebf 428.5714)\""},
+      "RowDefault"]}
+   },
+   DefaultBaseStyle->"Column",
+   GridBoxAlignment->{"Columns" -> {{Left}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Column"]], "Print",
+ CellChangeTimes->{4.0025989113626194`*^9},
+ CellLabel->
+  "\:6b63\:5728\:8ba1\:7b97In[145]:=",ExpressionUUID->"8ac991a2-a10b-034e-\
+bc54-bc593278fd50"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Step 2 \[CenterDot] \:556e\:5408\:51e0\:4f55\:4e0e B \:77e9\:9635\:72ec\
+\:7acb\:91cd\:63a8\:ff08V3 + V4\:ff09", "Section",
+ CellID->279579483,ExpressionUUID->"16664372-192a-6642-85b5-31811a7e9206"],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+ex = \"D:/AAAAAAAAAAAAAAAAAAAMyFile/Doctor/Research/ngw_final/results_doc/ngw_\
+export\";
+readM[f_] := Module[{d = Import[FileNameJoin[{ex, f}], \"Table\", \
+\"FieldSeparators\" -> \",\"]},
+   If[VectorQ[d], List /@ d, d]];
+pa = Import[FileNameJoin[{ex, \"meta.json\"}], \"RawJSON\"][\"params\"];
+al = pa[\"alpha\"]; r1 = pa[\"r1\"]; r2 = pa[\"r2\"]; Np = pa[\"N\"];
+Bcode = readM[\"Bbig.csv\"]; phC = readM[\"phases.csv\"];
+er[ph_] := {Cos[ph], Sin[ph], 0.}; et[ph_] := {-Sin[ph], Cos[ph], 0.};
+nn[ph_] := Cos[al] et[ph] + Sin[al] er[ph];
+qs = Table[Symbol[\"qs\" <> ToString[k]], {k, 6}];
+qp = Table[Symbol[\"qp\" <> ToString[k]], {k, 6}];
+uOf[b_] := b[[1 ;; 3]]; thOf[b_] := b[[4 ;; 6]];
+uP[b_, r_] := uOf[b] + Cross[thOf[b], r];
+deltaSP[i_] := Module[{ph = 2. Pi (i - 1)/Np, rA, rB},
+   rA = r1 er[ph]; rB = -r2 er[ph]; nn[ph] . (uP[qp, rB] - uP[qs, rA])];
+deltaRP[i_] := Module[{ph = 2. Pi (i - 1)/Np, rC}, rC = r2 er[ph]; nn[ph] . \
+uP[qp, rC]];
+place[g_, i_] := Module[{row = ConstantArray[0., 30], c0 = 12 + 6 (i - 1)},
+   row[[1 ;; 6]] = g[[1 ;; 6]]; row[[c0 + 1 ;; c0 + 6]] = g[[7 ;; 12]]; row];
+res = Table[Module[{bs = Bcode[[2 i - 1]], br = Bcode[[2 i]], gs, gr},
+    gs = place[Grad[deltaSP[i], Join[qs, qp]], i];
+    gr = place[Grad[deltaRP[i], Join[qs, qp]], i];
+    {i, Norm[bs - gs], Norm[bs + gs], Norm[br - gr], Norm[br + gr]}], {i, Np}];
+phMM = Table[{(i - 1)/Np, (i - 1)/Np + 1/2, 2 Pi (i - 1)/Np}, {i, Np}];
+errPh = Max[Abs[N[phMM - phC]]];
+rb1 = pa[\"rb1\"]; rb2 = pa[\"rb2\"];
+st[x_] := ToString[N[x, 4]];
+Print[Column[Join[
+   {Style[\"\[Delta]sp = n\[CenterDot][(u_p + \[Theta]_p\[Times]r_p) - (u_s + \
+\[Theta]_s\[Times]r_s)] ,  B = \[PartialD]\[Delta]/\[PartialD]q (Grad)\", \
+Bold, 12],
+    Row[{\"   i     |Bsp-\[Del]\[Delta]|      |Bsp+\[Del]\[Delta]|      |Brp-\
+\[Del]\[Delta]|      |Brp+\[Del]\[Delta]|\"}],
+    Sequence @@ Table[Row[{\"   \", res[[k, 1]], \"      \", st[res[[k, 2]]], \
+\"           \",
+        st[res[[k, 3]]], \"            \", st[res[[k, 4]]], \"            \", \
+st[res[[k, 5]]]}], {k, Length[res]}],
+    \"\",
+    Row[{\"\[DoubleRightArrow] \:5916\:556e\:5408 B_sp = -\[Del]\[Delta]sp  (\
+\:6b8b\:5dee \", st[res[[1, 3]]], \")   \:5185\:556e\:5408 B_rp = +\[Del]\
+\[Delta]rp  (\:6b8b\:5dee \", st[res[[1, 4]]], \")\"}],
+    \"\",
+    Style[\"\:89e3\:6790\:6052\:7b49\:5f0f\:6821\:6838\:ff1a|Bsp| = Sqrt[2 + \
+rb1^2 + rb2^2]\:ff0c|Brp| = Sqrt[1 + rb2^2]\", Bold, 12],
+    Row[{\"   |Bsp| = \", st[Norm[Bcode[[1]]]], \"   vs   \", st[Sqrt[2 + \
+rb1^2 + rb2^2]]}],
+    Row[{\"   |Brp| = \", st[Norm[Bcode[[2]]]], \"   vs   \", st[Sqrt[1 + \
+rb2^2]]}],
+    \"\",
+    Row[{\"V3 \:76f8\:4f4d\:8868 max|\[Phi]MM - \[Phi]code| = \", \
+st[errPh]}]}]]];\
+\>", "Input",
+ CellLabel->"In[234]:=",
+ CellID->1366493896,ExpressionUUID->"eed373d1-cc24-4e49-a106-fdb4616abe2b"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     StyleBox["\<\"\[Delta]sp = n\[CenterDot][(u_p + \[Theta]_p\[Times]r_p) - \
+(u_s + \[Theta]_s\[Times]r_s)] ,  B = \[PartialD]\[Delta]/\[PartialD]q (Grad)\
+\"\>",
+      StripOnInput->False,
+      FontSize->12,
+      FontWeight->Bold]},
+    {
+     TemplateBox[{
+      "\"   i     |Bsp-\[Del]\[Delta]|      |Bsp+\[Del]\[Delta]|      |Brp-\
+\[Del]\[Delta]|      |Brp+\[Del]\[Delta]|\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"   \"", "1", "\"      \"", "\"2.82899\"", "\"           \"", 
+       "\"0.\"", "\"            \"", "\"0.\"", "\"            \"", 
+       "\"2.00029\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"   \"", "2", "\"      \"", "\"2.82899\"", "\"           \"", 
+       "\"0.\"", "\"            \"", "\"0.\"", "\"            \"", 
+       "\"2.00029\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"   \"", "3", "\"      \"", "\"2.82899\"", "\"           \"", 
+       "\"0.\"", "\"            \"", "\"0.\"", "\"            \"", 
+       "\"2.00029\""},
+      "RowDefault"]},
+    {"\<\"\"\>"},
+    {
+     TemplateBox[{
+      "\"\[DoubleRightArrow] \:5916\:556e\:5408 B_sp = -\[Del]\[Delta]sp  (\
+\:6b8b\:5dee \"", "\"0.\"", 
+       "\")   \:5185\:556e\:5408 B_rp = +\[Del]\[Delta]rp  (\:6b8b\:5dee \"", 
+       "\"0.\"", "\")\""},
+      "RowDefault"]},
+    {"\<\"\"\>"},
+    {
+     StyleBox["\<\"\:89e3\:6790\:6052\:7b49\:5f0f\:6821\:6838\:ff1a|Bsp| = \
+Sqrt[2 + rb1^2 + rb2^2]\:ff0c|Brp| = Sqrt[1 + rb2^2]\"\>",
+      StripOnInput->False,
+      FontSize->12,
+      FontWeight->Bold]},
+    {
+     TemplateBox[{
+      "\"   |Bsp| = \"", "\"1.41449\"", "\"   vs   \"", "\"1.41449\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"   |Brp| = \"", "\"1.00014\"", "\"   vs   \"", "\"1.00014\""},
+      "RowDefault"]},
+    {"\<\"\"\>"},
+    {
+     TemplateBox[{
+      "\"V3 \:76f8\:4f4d\:8868 max|\[Phi]MM - \[Phi]code| = \"", 
+       "\"          -16\\n2.22045 10\""},
+      "RowDefault"]}
+   },
+   DefaultBaseStyle->"Column",
+   GridBoxAlignment->{"Columns" -> {{Left}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Column"]], "Print",
+ CellChangeTimes->{4.002598913102743*^9, 4.002598961381956*^9},
+ CellLabel->
+  "\:6b63\:5728\:8ba1\:7b97In[234]:=",ExpressionUUID->"3ed1ccd3-45a9-bd4d-\
+81d9-bc20fa6ad034"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Step 3 \[CenterDot] \:7ed3\:6784\:521a\:5ea6 K_struct \
+\:72ec\:7acb\:91cd\:63a8\:ff08V5\:ff09\[LongDash] \:5e94\:53d8\:80fd + \
+Hessian", "Section",
+ CellID->1580218635,ExpressionUUID->"a58b3376-587e-004d-b402-9e63a8ed0be7"],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Xss = Table[Symbol[\"xs\" <> ToString[k]], {k, 6}];
+Xcc = Table[Symbol[\"xc\" <> ToString[k]], {k, 6}];
+Xpp[i_] := Table[Symbol[\"xp\" <> ToString[i] <> \"q\" <> ToString[k]], {k, \
+6}];
+vars30 = Join[Xss, Xcc, Sequence @@ Table[Xpp[i], {i, Np}]];
+Xof[X_, r_] := Join[X[[1 ;; 3]] + Cross[X[[4 ;; 6]], r], X[[4 ;; 6]]];
+ez = {0., 0., 1.};
+rrOf[i_] := {Cos[2. Pi (i - 1)/Np], Sin[2. Pi (i - 1)/Np], 0.};
+ks = pa[\"k_sun_bearing\"]; kc = pa[\"k_carrier_bearing\"];
+kp = pa[\"k_planet_bearing\"]; kt = pa[\"k_tilt_bearing\"];
+aa = pa[\"a\"]; bb = pa[\"b\"];
+Kb = DiagonalMatrix[{kp, kp, kp, kt, kt, 0.}];
+Usun = 1/2 ks (Xss[[1 ;; 3]] . Xss[[1 ;; 3]]) + 1/2 kt (Xss[[4]]^2 + \
+Xss[[5]]^2);
+Ucar = 1/2 kc (Xcc[[1 ;; 3]] . Xcc[[1 ;; 3]]) + 1/2 kt (Xcc[[4]]^2 + \
+Xcc[[5]]^2);
+Ucen = Sum[Module[{d = Xof[Xpp[i], {0., 0., 0.}] - Xof[Xcc, aa rrOf[i]]}, 1/2 \
+d . Kb . d], {i, Np}];
+Kcen = N[D[Usun + Ucar + Ucen, {vars30, 2}]];
+Kcode = readM[\"K_struct.csv\"];
+errK = Norm[Kcen - Kcode]/Norm[Kcode];
+nsK = Chop[NullSpace[Kcen], 10^-8];
+supp[v_] := Sort[Select[Range[Length[v]], Abs[N[v[[#]]]] > 1.*^-9 &]];
+dofNames = Join[{\"xs\", \"xc\"}, Table[\"xp\" <> ToString[i], {i, Np}]];
+nameOf[j_] := dofNames[[Quotient[j - 1, 6] + 1]] <> \".\" <> {\"x\", \"y\", \
+\"z\", \"Tx\", \"Ty\", \"Tz\"}[[Mod[j - 1, 6] + 1]];
+bsym = Symbol[\"bOffset\"];
+UpairSym = Sum[Sum[Module[{d = Xof[Xpp[i], sg bsym/2 ez] - Xof[Xcc, aa \
+rrOf[i] + sg bsym/2 ez]},
+     1/2 d . Kb . d], {sg, {-1., 1.}}], {i, Np}];
+limRes = Norm[N[D[UpairSym, {vars30, 2}] /. bsym -> 0.] - 2 N[D[Ucen, \
+{vars30, 2}]]];
+st[x_] := ToString[N[x, 4]];
+Print[Column[{
+   Style[\"X(r) = [u + \[Theta]\[Times]r ; \[Theta]] ,  \[CapitalDelta]i = \
+X_p(0) - X_c(a e_r) ,  K = \[PartialD]^2U/\[PartialD]q^2\", Bold, 12],
+   Row[{\"   K_struct \:76f8\:5bf9\:8bef\:5dee = \", st[errK]}],
+   Row[{\"   \:5bf9\:79f0\:6027 = \", st[Norm[Kcen - Transpose[Kcen]]], \"    \
+\:79e9 = \", MatrixRank[Kcen],
+     \"    \:96f6\:7a7a\:95f4\:7ef4\:6570 = \", Length[nsK]}],
+   \"\",
+   Style[\"\:96f6\:7a7a\:95f4\:65b9\:5411\:ff08K_struct \:5355\:72ec\:65f6\
+\:65e0\:521a\:5ea6\:7684\:8fd0\:52a8\:ff09\", Bold, 12],
+   Sequence @@ Table[Row[{\"   \", k, \": \", StringRiffle[nameOf /@ \
+supp[nsK[[k]]], \", \"]}], {k, Length[nsK]}],
+   \"\",
+   Style[\"layout \:81ea\:6d3d\:6027\", Bold, 12],
+   Row[{\"   b\[Rule]0 \:65f6  \[DoubleVerticalBar]K_pair - 2 K_center\
+\[DoubleVerticalBar] = \", st[limRes]}]}]];\
+\>", "Input",
+ CellLabel->"In[254]:=",
+ CellID->1553214992,ExpressionUUID->"796a9b82-cb55-5543-a451-a02c8ee72b71"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     StyleBox["\<\"X(r) = [u + \[Theta]\[Times]r ; \[Theta]] ,  \
+\[CapitalDelta]i = X_p(0) - X_c(a e_r) ,  K = \[PartialD]^2U/\[PartialD]q^2\"\
+\>",
+      StripOnInput->False,
+      FontSize->12,
+      FontWeight->Bold]},
+    {
+     TemplateBox[{
+      "\"   K_struct \:76f8\:5bf9\:8bef\:5dee = \"", 
+       "\"          -19\\n4.53432 10\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"   \:5bf9\:79f0\:6027 = \"", "\"0.\"", "\"    \:79e9 = \"", "25", 
+       "\"    \:96f6\:7a7a\:95f4\:7ef4\:6570 = \"", "5"},
+      "RowDefault"]},
+    {"\<\"\"\>"},
+    {
+     StyleBox["\<\"\:96f6\:7a7a\:95f4\:65b9\:5411\:ff08K_struct \:5355\:72ec\
+\:65f6\:65e0\:521a\:5ea6\:7684\:8fd0\:52a8\:ff09\"\>",
+      StripOnInput->False,
+      FontSize->12,
+      FontWeight->Bold]},
+    {
+     TemplateBox[{"\"   \"", "1", "\": \"", "\"xs.Tz\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{"\"   \"", "2", "\": \"", "\"xp3.Tz\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{"\"   \"", "3", "\": \"", "\"xp1.Tz, xp2.Tz\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"   \"", "4", "\": \"", 
+       "\"xc.Tz, xp1.y, xp2.x, xp2.y, xp3.x, xp3.y\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{"\"   \"", "5", "\": \"", "\"xp1.Tz, xp2.Tz\""},
+      "RowDefault"]},
+    {"\<\"\"\>"},
+    {
+     StyleBox["\<\"layout \:81ea\:6d3d\:6027\"\>",
+      StripOnInput->False,
+      FontSize->12,
+      FontWeight->Bold]},
+    {
+     TemplateBox[{
+      "\"   b\[Rule]0 \:65f6  \[DoubleVerticalBar]K_pair - 2 K_center\
+\[DoubleVerticalBar] = \"", "\"          -9\\n3.72529 10\""},
+      "RowDefault"]}
+   },
+   DefaultBaseStyle->"Column",
+   GridBoxAlignment->{"Columns" -> {{Left}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Column"]], "Print",
+ CellChangeTimes->{4.00259891500008*^9, 4.002598963354719*^9},
+ CellLabel->
+  "\:6b63\:5728\:8ba1\:7b97In[254]:=",ExpressionUUID->"4fc5edc1-e09a-7c49-\
+8998-2c1a74a83277"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Step 4 \[CenterDot] \:8d28\:91cf\:77e9\:9635 M \:72ec\:7acb\:91cd\:63a8\
+\:ff08V6\:ff09\[LongDash] \:60ef\:91cf\:94fe + \:52a8\:80fd Hessian + \:8f6c\
+\:5b50\:5e76\:5165", "Section",
+ CellID->533079922,ExpressionUUID->"8893c91e-ed1f-0245-8f12-cc0218b72897"],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+rho = pa[\"rho\"]; bw = pa[\"b\"]; r1s = pa[\"r1\"]; r2s = pa[\"r2\"];
+Jdisk[ro_, ri_] := 1/2 rho Pi bw (ro^4 - ri^4);
+mdisk[ro_, ri_] := rho Pi bw (ro^2 - ri^2);
+JsMM = Jdisk[r1s, pa[\"d_sun_bore\"]/2]; msMM = mdisk[r1s, \
+pa[\"d_sun_bore\"]/2];
+JpMM = Jdisk[r2s, pa[\"d_pl_bore\"]/2]; mpMM = mdisk[r2s, pa[\"d_pl_bore\"]/2];
+rpin = pa[\"d_pin\"]/2; Lpin = pa[\"L_pin\"];
+mpinMM = rho Pi rpin^2 Lpin;
+JpinxxMM = mpinMM (3 rpin^2 + Lpin^2)/12;
+JplateMM = 1/2 rho Pi pa[\"t_plate\"] (pa[\"R_plate\"]^4 - pa[\"R_hub\"]^4);
+mplateMM = rho Pi pa[\"t_plate\"] (pa[\"R_plate\"]^2 - pa[\"R_hub\"]^2);
+JpinsMM = pa[\"N\"] mpinMM (pa[\"a\"]^2 + rpin^2/2);
+Jc1MM = JplateMM + JpinsMM;
+mc1MM = mplateMM + pa[\"N\"] mpinMM;
+sumSin2 = Total[(Sin[2. Pi (# - 1)/pa[\"N\"]])^2 & /@ Range[pa[\"N\"]]];
+Jc1xxMM = JplateMM/2 + pa[\"N\"] JpinxxMM + sumSin2 mpinMM pa[\"a\"]^2;
+pnames = {\"J_s\", \"m_s\", \"J_p\", \"m_p\", \"m_pin\", \"J_pin_xx\", \
+\"J_plate\", \"m_plate\", \"J_c1\", \"m_c1\", \"J_c1_xx\"};
+mmVals = {JsMM, msMM, JpMM, mpMM, mpinMM, JpinxxMM, JplateMM, mplateMM, \
+Jc1MM, mc1MM, Jc1xxMM};
+relP = Abs[(mmVals - (pa /@ pnames))/(pa /@ pnames)];
+wi = First@Ordering[relP, -1];
+rotS = Symbol[\"JrotorSym\"];
+Tgen[X_, m_, Jxx_, Jzz_] := 1/2 m (X[[1]]^2 + X[[2]]^2 + X[[3]]^2) + 1/2 (Jxx \
+X[[4]]^2 + Jxx X[[5]]^2 + Jzz X[[6]]^2);
+Ttot = Tgen[Xss, msMM, JsMM/2, JsMM + rotS] + Tgen[Xcc, mc1MM, Jc1xxMM, \
+Jc1MM] +
+   Sum[Tgen[Xpp[i], mpMM, JpMM/2, JpMM], {i, Np}];
+Msym = D[Ttot, {vars30, 2}];
+M0 = N[Msym /. rotS -> 0.];
+Mcode = readM[\"M.csv\"];
+errM = Norm[M0 - Mcode]/Norm[Mcode];
+offDiag = Max[Abs[M0 - DiagonalMatrix[Diagonal[M0]]]];
+expDiag = Join[{msMM, msMM, msMM, JsMM/2, JsMM/2, JsMM},
+   {mc1MM, mc1MM, mc1MM, Jc1xxMM, Jc1xxMM, Jc1MM},
+   Sequence @@ Table[{mpMM, mpMM, mpMM, JpMM/2, JpMM/2, JpMM}, {Np}]];
+errDiag = Max[Abs[(Diagonal[M0] - expDiag)/expDiag]];
+diffRot = N[Msym /. rotS -> 2.7*^-3] - M0;
+nzRot = Position[diffRot, x_ /; Abs[x] > 1.*^-15];
+st[x_] := ToString[N[x, 4]];
+Print[Column[{
+   Style[\"(a) \:60ef\:91cf\:94fe\:ff1a\:51e0\:4f55 + \
+\:5e73\:884c\:8f74\:5b9a\:7406\", Bold, 12],
+   Row[{\"   11 \:4e2a\:60ef\:91cf/\:8d28\:91cf\:53c2\:6570\:6700\:5927\:76f8\
+\:5bf9\:8bef\:5dee = \", st[Max[relP]], \"   (\:6700\:5dee\:9879 \", \
+pnames[[wi]], \")\"}],
+   Row[{\"   \[CapitalSigma] sin^2\[Phi]i = \", st[sumSin2], \"   (\:5e73\
+\:884c\:8f74\:9879\:7cfb\:6570\:ff0c\:7406\:8bba 3/2)\"}],
+   \"\",
+   Style[\"(b) T = \[Sum] 1/2 m|u'|^2 + 1/2(Jxx\[Theta]x'^2 + Jxx\[Theta]y'^2 \
++ Jzz\[Theta]z'^2) ,  M = \[PartialD]^2T/\[PartialD]q'^2\", Bold, 12],
+   Row[{\"   M \:76f8\:5bf9\:8bef\:5dee = \", st[errM], \"    \:975e\:5bf9\
+\:89d2\:5143\:6700\:5927 = \", st[offDiag]}],
+   Row[{\"   \:5bf9\:89d2\:5143\:6a21\:5f0f\:6838\:5bf9\:ff08\:6bcf\:4ef6 \
+[m,m,m,Jxx,Jxx,Jzz]\:ff09\:6700\:5927\:76f8\:5bf9\:8bef\:5dee = \", \
+st[errDiag]}],
+   \"\",
+   Style[\"(c) \
+\:7535\:673a\:8f6c\:5b50\:60ef\:91cf\:5e76\:5165\:4f4d\:7f6e\", Bold, 12],
+   Row[{\"   M(J_rotor) - M(0) \:7684\:975e\:96f6\:4f4d\:7f6e = \", nzRot, \" \
+    \:503c = \", st[diffRot[[6, 6]]]}],
+   Row[{\"   \:5bf9\:5e94\:81ea\:7531\:5ea6 = \", nameOf[6], \" (\:592a\:9633\
+\:8f6e\:7ed5 z \:8f74)\"}]}]];\
+\>", "Input",
+ CellLabel->"In[280]:=",
+ CellID->1023072741,ExpressionUUID->"6232e8c0-e556-024e-b2fc-2040ef68f035"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     StyleBox["\<\"(a) \:60ef\:91cf\:94fe\:ff1a\:51e0\:4f55 + \:5e73\:884c\
+\:8f74\:5b9a\:7406\"\>",
+      StripOnInput->False,
+      FontSize->12,
+      FontWeight->Bold]},
+    {
+     TemplateBox[{
+      "\"   11 \:4e2a\:60ef\:91cf/\:8d28\:91cf\:53c2\:6570\:6700\:5927\:76f8\
+\:5bf9\:8bef\:5dee = \"", "\"          -16\\n2.63582 10\"", 
+       "\"   (\:6700\:5dee\:9879 \"", "\"J_p\"", "\")\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"   \[CapitalSigma] sin^2\[Phi]i = \"", "\"1.5\"", 
+       "\"   (\:5e73\:884c\:8f74\:9879\:7cfb\:6570\:ff0c\:7406\:8bba 3/2)\""},
+      "RowDefault"]},
+    {"\<\"\"\>"},
+    {
+     StyleBox["\<\"(b) T = \[Sum] 1/2 m|u'|^2 + 1/2(Jxx\[Theta]x'^2 + Jxx\
+\[Theta]y'^2 + Jzz\[Theta]z'^2) ,  M = \[PartialD]^2T/\[PartialD]q'^2\"\>",
+      StripOnInput->False,
+      FontSize->12,
+      FontWeight->Bold]},
+    {
+     TemplateBox[{
+      "\"   M \:76f8\:5bf9\:8bef\:5dee = \"", 
+       "\"          -17\\n7.27571 10\"", 
+       "\"    \:975e\:5bf9\:89d2\:5143\:6700\:5927 = \"", "\"0.\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"   \:5bf9\:89d2\:5143\:6a21\:5f0f\:6838\:5bf9\:ff08\:6bcf\:4ef6 \
+[m,m,m,Jxx,Jxx,Jzz]\:ff09\:6700\:5927\:76f8\:5bf9\:8bef\:5dee = \"", "\"0.\""},
+      "RowDefault"]},
+    {"\<\"\"\>"},
+    {
+     StyleBox["\<\"(c) \:7535\:673a\:8f6c\:5b50\:60ef\:91cf\:5e76\:5165\:4f4d\
+\:7f6e\"\>",
+      StripOnInput->False,
+      FontSize->12,
+      FontWeight->Bold]},
+    {
+     TemplateBox[{
+      "\"   M(J_rotor) - M(0) \:7684\:975e\:96f6\:4f4d\:7f6e = \"", 
+       RowBox[{"{", 
+         RowBox[{"{", 
+           RowBox[{"6", ",", "6"}], "}"}], "}"}], "\"     \:503c = \"", 
+       "\"0.0027\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"   \:5bf9\:5e94\:81ea\:7531\:5ea6 = \"", "\"xs.Tz\"", 
+       "\" (\:592a\:9633\:8f6e\:7ed5 z \:8f74)\""},
+      "RowDefault"]}
+   },
+   DefaultBaseStyle->"Column",
+   GridBoxAlignment->{"Columns" -> {{Left}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Column"]], "Print",
+ CellChangeTimes->{4.0025989168195686`*^9, 4.0025989651105747`*^9},
+ CellLabel->
+  "\:6b63\:5728\:8ba1\:7b97In[280]:=",ExpressionUUID->"3d08ad3a-e19c-5443-\
+afdd-04b9205ef959"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Step 5 \[CenterDot] \:5e7f\:4e49\:529b\:7b26\:53f7\:4e00\:81f4\:6027\
+\:ff08V7\:ff09+ \:9759\:529b\:5747\:8f7d\:ff08V9\:ff09", "Section",
+ CellID->992708890,ExpressionUUID->"3d328696-c3aa-f549-85e0-702c614894b6"],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+ex = \"D:/AAAAAAAAAAAAAAAAAAAMyFile/Doctor/Research/ngw_final/results_doc/ngw_\
+export\";
+readM[f_] := Module[{d = Import[FileNameJoin[{ex, f}], \"Table\", \
+\"FieldSeparators\" -> \",\"]},
+   If[VectorQ[d], List /@ d, d]];
+pa = Import[FileNameJoin[{ex, \"meta.json\"}], \"RawJSON\"][\"params\"];
+Np = pa[\"N\"];
+al2 = pa[\"alpha\"]; r1v = pa[\"r1\"]; r2v = pa[\"r2\"];
+er2[ph_] := {Cos[ph], Sin[ph], 0.}; et2[ph_] := {-Sin[ph], Cos[ph], 0.};
+nn2[ph_] := Cos[al2] et2[ph] + Sin[al2] er2[ph];
+qa = Table[Symbol[\"qa\" <> ToString[k]], {k, 6}];
+qb = Table[Symbol[\"qb\" <> ToString[k]], {k, 6}];
+up2[b_, r_] := b[[1 ;; 3]] + Cross[b[[4 ;; 6]], r];
+dSP[i_] := Module[{ph = 2. Pi (i - 1)/Np}, nn2[ph] . (up2[qb, -r2v er2[ph]] - \
+up2[qa, r1v er2[ph]])];
+dRP[i_] := Module[{ph = 2. Pi (i - 1)/Np}, nn2[ph] . up2[qb, r2v er2[ph]]];
+plc[g_, i_] := Module[{row = ConstantArray[0., 30], c0 = 12 + 6 (i - 1)},
+   row[[1 ;; 6]] = g[[1 ;; 6]]; row[[c0 + 1 ;; c0 + 6]] = g[[7 ;; 12]]; row];
+Bm = Table[If[OddQ[j], plc[Grad[dSP[(j + 1)/2], Join[qa, qb]], (j + 1)/2],
+    plc[Grad[dRP[j/2], Join[qa, qb]], j/2]], {j, 2 Np}];
+n2 = 2 Np;
+vars30b = Table[Symbol[\"zz\" <> ToString[k]], {k, 30}];
+kvec = Flatten[Table[{pa[\"k_sp\"], pa[\"k_rp\"]}, {Np}]];
+delSym = Bm . vars30b;
+Umesh = 1/2 Total[kvec delSym^2];
+KmeshB = Transpose[Bm] . DiagonalMatrix[kvec] . Bm;
+errHess = Norm[N[D[Umesh, {vars30b, 2}]] - KmeshB]/Norm[KmeshB];
+qt = N[Table[Sin[k]/7., {k, 30}]];
+errSign = Norm[N[D[Umesh, {vars30b, 1}] /. Thread[vars30b -> qt]] - \
+Transpose[Bm] . (kvec (Bm . qt))]/
+   Norm[Transpose[Bm] . (kvec (Bm . qt))];
+Kall = readM[\"K_struct.csv\"] + KmeshB;
+Kpinv = PseudoInverse[Kall];
+iRat = 1 + pa[\"z3\"]/pa[\"z1\"];
+mkF[te_, tl_] := ReplacePart[ConstantArray[0., 30], {6 -> te, 12 -> -tl}];
+resOf[te_, tl_] := Module[{F = mkF[te, tl], q = Kpinv . mkF[te, tl]}, \
+Norm[Kall . q - F]/Norm[F]];
+Te = 20.; TL = iRat Te;
+qst = Kpinv . mkF[Te, TL];
+Bcode = readM[\"Bbig.csv\"];
+(* \:51e0\:4f55\:7ea6\:5b9a vs \:4ee3\:7801\:7ea6\:5b9a *)
+sgSp = Sign[Total[Bm[[1]] Bcode[[1]]]]; sgRp = Sign[Total[Bm[[2]] Bcode[[2]]]];
+dcod = Bcode . qst;
+Fsp = kvec[[1 ;; n2 ;; 2]] dcod[[1 ;; n2 ;; 2]];
+Frp = kvec[[2 ;; n2 ;; 2]] dcod[[2 ;; n2 ;; 2]];
+Fth = Te/(3 pa[\"rb1\"]);
+KHeb = Max[Abs[Fsp]]/Mean[Abs[Fsp]];
+st[x_] := ToString[N[x, 6]];
+Print[Column[{
+   Style[\"(a) \:7b26\:53f7\:4e00\:81f4\:6027\:ff1aU = 1/2 \[Sum] k_i \
+\[Delta]_i^2 , \[Delta] = B q , F = k \[CircleDot] \[Delta]\", Bold, 12],
+   Row[{\"   rel |\[PartialD]^2U/\[PartialD]q^2 - \[Sum] k_i B_i^T B_i| = \", \
+st[errHess]}],
+   Row[{\"   rel |\[Del]U - B^T F|  (\:5728\:6d4b\:8bd5\:70b9 q \:5904\:6c42\
+\:503c)      = \", st[errSign]}],
+   \"   \[DoubleRightArrow] \:5f39\:6027\:5e7f\:4e49\:529b = -\[Del]U = -B^T \
+F\:ff0cS-Function \:4e2d -Bbig'*Fmesh \:7684\:7b26\:53f7\:6b63\:786e\",
+   \"\",
+   Style[\"(b) \:4e24\:5957\:7ea6\:5b9a\:7684\:5173\:7cfb\:ff08Step 2 \:7684\
+\:53d1\:73b0\:7684\:5177\:4f53\:540e\:679c\:ff09\", Bold, 12],
+   Row[{\"   sign(\[Sum] B_geo\[CenterDot]B_code) \:5916\:556e\:5408 = \", \
+sgSp, \"    \:5185\:556e\:5408 = \", sgRp}],
+   \"   \[DoubleRightArrow] \:5916\:556e\:5408 B_geo = -B_code \:ff0c\:6545 \
+\[Delta]_geo = -\[Delta]_code \
+\:ff1b\:529b\:5fc5\:987b\:7528\:4ee3\:7801\:7ea6\:5b9a\:6c47\:62a5\",
+   \"\",
+   Style[\"(c) \:9759\:529b\:5747\:8f7d   Te = 20 N\[CenterDot]m , TL = i Te \
+= 70 N\[CenterDot]m\", Bold, 12],
+   Row[{\"   F_sp (\:4ee3\:7801\:7ea6\:5b9a) = \", st[Fsp], \" N\"}],
+   Row[{\"   \:7406\:8bba Te/(3 r_b1) = \", st[Fth], \" N      (NGW_test \
+\:671f\:671b 295.604937)\"}],
+   Row[{\"   F_rp (\:4ee3\:7801\:7ea6\:5b9a) = \", st[Frp], \" N\"}],
+   Row[{\"   F_rp + F_sp      = \", st[Frp + Fsp], \"      \
+(\:884c\:661f\:8f6e\:529b\:5e73\:8861\:ff0c\:5e94\:4e3a 0)\"}],
+   Row[{\"   \:5747\:8f7d\:7cfb\:6570 K_H = max|F_sp| / mean|F_sp| = \", \
+st[KHeb]}],
+   \"\",
+   Style[\"(d) \:53ef\:89e3\:6027\:ff1a\:53ea\:6709 TL = i Te \:624d\:5b58\
+\:5728\:9759\:529b\:89e3\:ff08\:521a\:4f53\:865a\:529f\:7684\:7b49\:4ef7\:8868\
+\:8ff0\:ff09\", Bold, 12],
+   Row[{\"   TL =  i Te          \:6b8b\:5dee = \", st[resOf[Te, iRat Te]]}],
+   Row[{\"   TL = 1.5 Te         \:6b8b\:5dee = \", st[resOf[Te, 1.5 Te]]}],
+   Row[{\"   TL = -i Te          \:6b8b\:5dee = \", st[resOf[Te, -iRat \
+Te]]}]}]];\
+\>", "Input",
+ CellID->1509694309,ExpressionUUID->"09a745f0-0c93-744b-ae50-4f94d9fcaf5e"],
+
+Cell["\<\
+(a) \:7b26\:53f7\:4e00\:81f4\:6027\:ff1aU = 1/2 \[Sum] k_i \[Delta]_i^2 , \
+\[Delta] = B q , F = k \[CircleDot] \[Delta]
+   rel |\[PartialD]^2U/\[PartialD]q^2 - \[Sum] k_i B_i^T B_i| =           -16
+                                       1.04288 10
+   rel |\[Del]U - B^T F|  (\:5728\:6d4b\:8bd5\:70b9 q \:5904\:6c42\:503c)     \
+ =           -17
+                                         6.95682 10
+   \[DoubleRightArrow] \:5f39\:6027\:5e7f\:4e49\:529b = -\[Del]U = -B^T F\
+\:ff0cS-Function \:4e2d -Bbig'*Fmesh \:7684\:7b26\:53f7\:6b63\:786e
+
+(b) \:4e24\:5957\:7ea6\:5b9a\:7684\:5173\:7cfb\:ff08Step 2 \:7684\:53d1\:73b0\
+\:7684\:5177\:4f53\:540e\:679c\:ff09
+   sign(\[Sum] B_geo\[CenterDot]B_code) \:5916\:556e\:5408 = -1    \:5185\
+\:556e\:5408 = 1
+   \[DoubleRightArrow] \:5916\:556e\:5408 B_geo = -B_code \:ff0c\:6545 \
+\[Delta]_geo = -\[Delta]_code \
+\:ff1b\:529b\:5fc5\:987b\:7528\:4ee3\:7801\:7ea6\:5b9a\:6c47\:62a5
+
+(c) \:9759\:529b\:5747\:8f7d   Te = 20 N\[CenterDot]m , TL = i Te = 70 N\
+\[CenterDot]m
+   F_sp (\:4ee3\:7801\:7ea6\:5b9a) = {295.605, 295.605, 295.605} N
+   \:7406\:8bba Te/(3 r_b1) = 295.605 N      (NGW_test \:671f\:671b 295.604937)
+   F_rp (\:4ee3\:7801\:7ea6\:5b9a) = {-295.605, -295.605, -295.605} N
+   F_rp + F_sp      =            -11            -10            -11       (\
+\:884c\:661f\:8f6e\:529b\:5e73\:8861\:ff0c\:5e94\:4e3a 0)
+                      {2.87628 10   , 1.44723 10   , 1.72804 10   }
+   \:5747\:8f7d\:7cfb\:6570 K_H = max|F_sp| / mean|F_sp| = 1.
+
+(d) \:53ef\:89e3\:6027\:ff1a\:53ea\:6709 TL = i Te \:624d\:5b58\:5728\:9759\
+\:529b\:89e3\:ff08\:521a\:4f53\:865a\:529f\:7684\:7b49\:4ef7\:8868\:8ff0\:ff09
+   TL =  i Te          \:6b8b\:5dee =           -12
+                            4.33747 10
+   TL = 1.5 Te         \:6b8b\:5dee = 0.203951
+   TL = -i Te          \:6b8b\:5dee = 0.353531\
+\>", "Print",
+ GeneratedCell->True,ExpressionUUID->"447ab44f-c949-af4f-9b25-66bd2d9adb6a"],
+
+Cell["Null", "Output",
+ GeneratedCell->True,ExpressionUUID->"d7599af4-454c-6f4c-88ad-a8f54b7b63d8"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Step 6 \[CenterDot] \:56fa\:6709\:9891\:7387 29 \
+\:9636\:9010\:9636\:6bd4\:5bf9\:ff08V11\:ff09+ \
+\:96f6\:6a21\:6001\:6821\:6838", "Section",
+ CellID->757258634,ExpressionUUID->"cdcd5f9d-5f73-dc48-a5db-4333f7f5b821"],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+ex = \"D:/AAAAAAAAAAAAAAAAAAAMyFile/Doctor/Research/ngw_final/results_doc/ngw_\
+export\";
+readM[f_] := Module[{d = Import[FileNameJoin[{ex, f}], \"Table\", \
+\"FieldSeparators\" -> \",\"]},
+   If[VectorQ[d], List /@ d, d]];
+pa = Import[FileNameJoin[{ex, \"meta.json\"}], \"RawJSON\"][\"params\"];
+Np = pa[\"N\"]; n2 = 2 Np;
+kvec = Flatten[Table[{pa[\"k_sp\"], pa[\"k_rp\"]}, {Np}]];
+Bcode = readM[\"Bbig.csv\"];
+Kfull = readM[\"K_struct.csv\"] + Transpose[Bcode] . DiagonalMatrix[kvec] . \
+Bcode;
+Mfull = readM[\"M.csv\"];
+{lam, vec} = Eigensystem[{Kfull, Mfull}];
+om = Sqrt[Clip[Re[lam], {0., Infinity}]];
+ord = Ordering[om];
+om = om[[ord]];
+fHz = om/(2. Pi);
+fN = Select[fHz, # > 1. &];
+fMat = Flatten[readM[\"eigfreq_matlab.csv\"]];
+nm = Min[Length[fMat], Length[fN]];
+rel = Abs[(fN[[1 ;; nm]] - fMat[[1 ;; nm]])/fMat[[1 ;; nm]]];
+worst = SortBy[Transpose[{fN[[1 ;; nm]], rel}], -#[[2]] &][[1 ;; 3]];
+worstS = StringRiffle[(\"f=\" <> ToString[N[#[[1]], 8]] <> \" Hz (rel \" <> \
+ToString[N[#[[2]], 3]] <> \")\") & /@ worst, \"; \"];
+mults = Sort[Tally[Round[1000. fN]][[All, 2]]];
+nv = First[NullSpace[Kfull]];
+iRat = 1 + pa[\"z3\"]/pa[\"z1\"];
+wil = nv[[12]]/nv[[6]];
+st[x_] := ToString[N[x, 6]];
+Print[Column[{
+   Style[\"\:5e7f\:4e49\:7279\:5f81\:503c\:95ee\:9898  K \[Phi] = \[Omega]^2 \
+M \[Phi]\", Bold, 12],
+   \"   K = K_struct + \[Sum] k_i B_i^T B_i    \:ff08K_struct \:6765\:81ea \
+Step 3 \:6821\:6838\:8fc7\:7684csv\:ff0cB \:6765\:81ea Step 2\:ff09\",
+   Row[{\"   \:6a21\:6001\:6570 = \", Length[fN], \"     MATLAB \:4fa7 = \", \
+Length[fMat]}],
+   Row[{\"   \:6700\:5927\:76f8\:5bf9\:8bef\:5dee = \", st[Max[rel]], \"     \
+\:5e73\:5747\:76f8\:5bf9\:8bef\:5dee = \", st[Mean[rel]]}],
+   Row[{\"   \:6700\:5dee 3 \:9636: \", worstS}],
+   Row[{\"   f1 = f2 = \", st[fN[[1]]], \" / \", st[fN[[2]]], \" Hz     (\
+\:6587\:6863\:503c 1544.833204)\"}],
+   Row[{\"   f_max = \", st[fN[[-1]]], \" Hz\"}],
+   \"\",
+   Style[\"\:96f6\:6a21\:6001\:ff08\:6574\:6392\:521a\:4f53\:4f20\:52a8\:ff09\
+\", Bold, 12],
+   Row[{\"   K \:7684\:96f6\:7a7a\:95f4\:7ef4\:6570 = \", \
+Length[NullSpace[Kfull]], \"      \[Omega]_min = \", st[om[[1]]], \" rad/s\"}],
+   Row[{\"   \[Omega]c / \[Omega]s = \", st[wil], \"     \:7406\:8bba 1/i = \
+\", st[1/iRat],
+     \"     (Step 1 \:7684 Willis \:7ed3\:679c)\"}],
+   Row[{\"   |K\[CenterDot]\[Phi]_null| = \", st[Norm[Kfull . nv]]}],
+   \"\",
+   Style[\"\:91cd\:6839\:7ed3\:6784\:ff08Step 7 \:7684\:5165\:53e3\:ff09\", \
+Bold, 12],
+   Row[{\"   \:591a\:91cd\:5ea6 = \", mults, \"     \[DoubleRightArrow] \
+\:5171 \", Length[mults], \" \:4e2a\:9891\:7387\:7fa4\"}]}]];\
+\>", "Input",
+ CellID->421743788,ExpressionUUID->"335a8fda-1f02-604a-aac0-2cf3eda72ed2"],
+
+Cell["\<\
+\:5e7f\:4e49\:7279\:5f81\:503c\:95ee\:9898  K \[Phi] = \[Omega]^2 M \[Phi]
+   K = K_struct + \[Sum] k_i B_i^T B_i    \:ff08K_struct \:6765\:81ea Step 3 \
+\:6821\:6838\:8fc7\:7684csv\:ff0cB \:6765\:81ea Step 2\:ff09
+   \:6a21\:6001\:6570 = 29     MATLAB \:4fa7 = 29
+   \:6700\:5927\:76f8\:5bf9\:8bef\:5dee =           -15     \
+\:5e73\:5747\:76f8\:5bf9\:8bef\:5dee =           -16
+            8.09508 10                 7.41539 10
+   \:6700\:5dee 3 \:9636: f=1544.83 Hz (rel           -15
+           8.09508 10); f=5008.06 Hz (rel          -15
+           2.9057 10); f=4208.54 Hz (rel           -15
+           1.29664 10)
+   f1 = f2 = 1544.83 / 1544.83 Hz     (\:6587\:6863\:503c 1544.833204)
+   f_max = 20698.8 Hz
+
+\:96f6\:6a21\:6001\:ff08\:6574\:6392\:521a\:4f53\:4f20\:52a8\:ff09
+   K \:7684\:96f6\:7a7a\:95f4\:7ef4\:6570 = 1      \[Omega]_min = 0. rad/s
+   \[Omega]c / \[Omega]s = 0.285714     \:7406\:8bba 1/i = 0.285714     (Step \
+1 \:7684 Willis \:7ed3\:679c)
+   |K\[CenterDot]\[Phi]_null| =           -7
+                3.62098 10
+
+\:91cd\:6839\:7ed3\:6784\:ff08Step 7 \:7684\:5165\:53e3\:ff09
+   \:591a\:91cd\:5ea6 = {1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4}   \
+  \[DoubleRightArrow] \:5171 17 \:4e2a\:9891\:7387\:7fa4\
+\>", "Print",
+ GeneratedCell->True,ExpressionUUID->"6c8a27ba-fca0-3440-bd30-c3dc6aa083d2"],
+
+Cell["Null", "Output",
+ GeneratedCell->True,ExpressionUUID->"d0281b56-1f84-7246-ad09-95056d8cc81b"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Step 7 \[CenterDot] \:52a8\:529b\:5b66\:65f6\:7a0b\:9a8c\:8bc1\:ff08V15\:ff09\
+\[LongDash] \:6fc0\:52b1\:6a21\:578b\:91cd\:7b97 + \:65b9\:7a0b\:9010\:70b9\
+\:6b8b\:5dee
+\
+\>", "Section",
+ CellID->995204252,ExpressionUUID->"0c8ea2cd-5842-a146-9231-f3994af31632"],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+ex7 = \"D:/AAAAAAAAAAAAAAAAAAAMyFile/Doctor/Research/ngw_final/results_doc/\
+ngw_export\";
+rd7[f_] := Module[{d = Import[FileNameJoin[{ex7, f}], \"Table\", \
+\"FieldSeparators\" -> \",\"]},
+   If[VectorQ[d], List /@ d, d]];
+pk7[x_] := Developer`ToPackedArray[1.0*N[x]];
+f7[x_] := Module[{m = N[x], e10, mm},
+   If[m == 0., Return[\"0\"]];
+   e10 = Floor[N[Log[10., Abs[m]]]]; mm = m/10.^e10;
+   If[Abs[mm] >= 9.9995, mm = mm/10.; e10++];
+   ToString[NumberForm[mm, {4, 3}]] <> \"e\" <> ToString[e10]];
+
+m7 = Import[FileNameJoin[{ex7, \"meta.json\"}], \"RawJSON\"];
+p7 = m7[\"params\"]; r7 = m7[\"reference_run\"];
+Np7 = p7[\"N\"]; fm7 = p7[\"f_mesh\"]; ws7 = p7[\"omega_s\"];
+ks7 = p7[\"k_single\"]; eaE7 = p7[\"eps_a_ext\"]; eaI7 = p7[\"eps_a_int\"];
+Js7 = p7[\"J_s\"]; Jp7 = p7[\"J_p\"]; Jr7 = p7[\"ring\"][\"J\"]; Jrot7 = \
+p7[\"J_rotor\"];
+rb17 = p7[\"rb1\"]; rb27 = p7[\"rb2\"]; rb37 = p7[\"rb3\"];
+tv7 = p7[\"tv\"]; zv7 = tv7[\"zeta_v\"]; Nh7 = tv7[\"Nharm\"];
+E1s7 = tv7[\"E_sn\"]; E2s7 = tv7[\"Ef_sn\"]; E1r7 = tv7[\"E_rn\"]; E2r7 = \
+tv7[\"Ef_rn\"];
+psi7 = tv7[\"phi_s\"]; pmi7 = tv7[\"phi_m\"]; gsr7 = tv7[\"gamma_sr\"];
+Te7 = r7[\"Te\"]; cL7 = r7[\"cL\"];
+
+M7 = pk7[rd7[\"M.csv\"]]; K7 = pk7[rd7[\"K_struct.csv\"]]; C7 = \
+pk7[rd7[\"C_struct.csv\"]];
+B7 = pk7[rd7[\"Bbig.csv\"]]; phA7 = pk7[rd7[\"phases.csv\"]];
+T7 = pk7[Flatten[rd7[\"ref_t.csv\"]]]; Q7 = pk7[rd7[\"ref_q.csv\"]];
+V7 = pk7[rd7[\"ref_v.csv\"]]; A7 = pk7[rd7[\"ref_acc.csv\"]]; Fr7 = \
+pk7[rd7[\"ref_Fmesh.csv\"]];
+n7 = Length[T7]; phS7 = phA7[[All, 1]]; phR7 = phA7[[All, 2]]; phE7 = \
+phA7[[All, 3]];
+
+du7[ty_] := If[ty === \"sp\", eaE7 - 1., eaI7 - 1.];
+kf7[t_?NumericQ, ty_, ph_] := Module[{g, du, tau},
+   du = du7[ty]; tau = fm7 t + ph; g = du;
+   Do[g = g + Sin[2 Pi jj du]/(Pi jj) Cos[2 Pi jj tau]
+          + (1 - Cos[2 Pi jj du])/(Pi jj) Sin[2 Pi jj tau], {jj, Nh7}];
+   ks7 (1 + g)];
+kd7[t_?NumericQ, ty_, ph_] := Module[{du = du7[ty], tau = fm7 t + ph, s = 0.},
+   Do[s = s + 2 (-Sin[2 Pi jj du] Sin[2 Pi jj tau]
+              + (1 - Cos[2 Pi jj du]) Cos[2 Pi jj tau]), {jj, Nh7}];
+   ks7 fm7 s];
+me7[\"sp\"] = 1/(rb17^2/(Js7 + Jrot7) + rb27^2/Jp7);
+me7[\"rp\"] = 1/(rb27^2/Jp7 + rb37^2/Jr7);
+cf7[t_?NumericQ, ty_, ph_] := 2 zv7 Sqrt[kf7[t, ty, ph] me7[ty]];
+ef7[t_?NumericQ, ty_, pe_] := Module[{A1, A2, gg, p1, p2},
+   If[ty === \"sp\", A1 = E1s7; A2 = E2s7; gg = Mod[p7[\"z1\"] pe, 2 Pi],
+      A1 = E1r7; A2 = E2r7; gg = Mod[p7[\"z3\"] pe, 2 Pi] + gsr7];
+   p1 = ws7 t + psi7; p2 = 2 Pi fm7 t + pmi7 + gg;
+   {A1 Sin[p1] + A2 Sin[p2], A1 ws7 Cos[p1] + A2 2 Pi fm7 Cos[p2]}];
+mvec7[t_?NumericQ] := Module[{kv, cv, ee, ed, dk},
+   kv = Flatten[Table[{kf7[t, \"sp\", phS7[[i]]], kf7[t, \"rp\", phR7[[i]]]}, \
+{i, Np7}]];
+   cv = Flatten[Table[{cf7[t, \"sp\", phS7[[i]]], cf7[t, \"rp\", phR7[[i]]]}, \
+{i, Np7}]];
+   dk = Flatten[Table[{kd7[t, \"sp\", phS7[[i]]], kd7[t, \"rp\", phR7[[i]]]}, \
+{i, Np7}]];
+   ee = Flatten[Table[With[{a = ef7[t, \"sp\", phE7[[i]]], b = ef7[t, \"rp\", \
+phE7[[i]]]},
+        {a[[1]], b[[1]]}], {i, Np7}]];
+   ed = Flatten[Table[With[{a = ef7[t, \"sp\", phE7[[i]]], b = ef7[t, \"rp\", \
+phE7[[i]]]},
+        {a[[2]], b[[2]]}], {i, Np7}]];
+   {kv, cv, ee, ed, dk}];
+
+(* (1) \:6fc0\:52b1\:6a21\:578b k(t)/c(t)/e(t) \:72ec\:7acb\:91cd\:7b97\:ff0c\
+\:4e0e MATLAB \:7684 Fmesh \:9010\:70b9\:6bd4\:5bf9 *)
+Fmm7 = Table[Module[{mv, dl}, mv = mvec7[T7[[k]]]; dl = B7 . Q7[[k]];
+    mv[[1]] (dl - mv[[3]]) + mv[[2]] (B7 . V7[[k]] - mv[[4]])], {k, n7}];
+errF7 = Max[Abs[Flatten[Fmm7 - Fr7]]]/Max[Abs[Flatten[Fr7]]];
+
+(* (2) \:65b9\:7a0b\:9010\:70b9\:6b8b\:5dee\:ff1a\:52a0\:901f\:5ea6\:7528 \
+MATLAB \:5bfc\:51fa\:7684\:89e3\:6790\:503c\:ff0c\:4e0d\:505a\:6570\:503c\
+\:5fae\:5206 *)
+e66 = 1.0 UnitVector[30, 6]; e127 = 1.0 UnitVector[30, 12];
+Fext7 = Table[Te7 e66 - cL7 V7[[k, 12]] e127, {k, n7}];
+Mqdd = Table[M7 . A7[[k]], {k, n7}];
+Kq = Table[K7 . Q7[[k]], {k, n7}];
+Cv = Table[C7 . V7[[k]], {k, n7}];
+BtF = Table[Transpose[B7] . Fmm7[[k]], {k, n7}];
+res7 = Mqdd + Kq + Cv + BtF - Fext7;
+sc1 = Max[Abs[Flatten[Mqdd]]]; sc2 = Max[Abs[Flatten[Kq]]];
+sc3 = Max[Abs[Flatten[Cv]]]; sc4 = Max[Abs[Flatten[BtF]]];
+sc5 = Max[Abs[Flatten[Fext7]]];
+rDof7 = Max /@ Transpose[Abs[res7]];
+rat7 = Quiet[V7[[2 ;; , 12]]/V7[[2 ;; , 6]]];
+iR7 = p7[\"i_ratio\"];
+
+Print[Column[{
+   Style[\"V15 \[CenterDot] \:52a8\:529b\:5b66\:65f6\:7a0b\:9a8c\:8bc1\:ff08\
+\:72ec\:7acb\:7ec4\:88c5\:8fd0\:52a8\:65b9\:7a0b \[RightArrow] \:9010\:70b9\
+\:6b8b\:5dee\:ff09\", Bold, 13],
+   Row[{\"  \:2460 \:6fc0\:52b1\:6a21\:578b\:72ec\:7acb\:91cd\:7b97   max|\
+\[CapitalDelta]F| / max|F| = \", f7[errF7], \"     [\:5224\:636e < 1e-6]\"}],
+   Row[{\"     max|F| = \", f7[Max[Abs[Flatten[Fr7]]]], \" N\"}],
+   \"\",
+   Row[{\"  \:2461 \:65b9\:7a0b\:6b8b\:5dee / max|M q\:0308|   = \", \
+f7[Max[Abs[Flatten[res7]]]/sc1],
+     \"     [\:5224\:636e < 1e-8]\"}],
+   Row[{\"     \:65b9\:7a0b\:6b8b\:5dee / max|K q|    = \", \
+f7[Max[Abs[Flatten[res7]]]/sc2]}],
+   Row[{\"     \:65b9\:7a0b\:6b8b\:5dee / max|F_ext|  = \", \
+f7[Max[Abs[Flatten[res7]]]/sc5]}],
+   Row[{\"     \:5404\:9879\:91cf\:7ea7 : |M q\:0308| = \", f7[sc1], \" N ,  \
+|K q| = \", f7[sc2],
+     \" N ,  |B\:1d40F| = \", f7[sc4], \" N ,  |C q\:0307| = \", f7[sc3], \" \
+N ,  |F_ext| = \", f7[sc5], \" N\"}],
+   \"\",
+   Row[{\"  \:2462 \:9010\:81ea\:7531\:5ea6\:6b8b\:5dee : \:4e0a\:754c \", \
+f7[Max[rDof7]], \" (DOF \",
+     ToString[First@Ordering[rDof7, -1]], \")    \:4e0b\:754c \", \
+f7[Min[rDof7]]}],
+   Row[{\"     \[Omega]c/\[Omega]s \:672b\:503c = \", f7[rat7[[-1]]], \"   \
+(Willis 1/i = \", f7[1/iR7], \")\",
+     \"    t>0.05s \:6700\:5927\:504f\:5dee = \", f7[Max[Abs[rat7[[500 ;; ]] \
+- 1/iR7]]]}]
+   }]];\
+\>", "Input",
+ CellLabel->"In[1]:=",
+ CellID->636842791,ExpressionUUID->"1570ff18-b33b-e348-b639-0224793703ac"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     StyleBox["\<\"V15 \[CenterDot] \
+\:52a8\:529b\:5b66\:65f6\:7a0b\:9a8c\:8bc1\:ff08\:72ec\:7acb\:7ec4\:88c5\:8fd0\
+\:52a8\:65b9\:7a0b \[RightArrow] \:9010\:70b9\:6b8b\:5dee\:ff09\"\>",
+      StripOnInput->False,
+      FontSize->13,
+      FontWeight->Bold]},
+    {
+     TemplateBox[{
+      "\"  \:2460 \:6fc0\:52b1\:6a21\:578b\:72ec\:7acb\:91cd\:7b97   max|\
+\[CapitalDelta]F| / max|F| = \"", "\"1.449e-13\"", 
+       "\"     [\:5224\:636e < 1e-6]\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{"\"     max|F| = \"", "\"3.077e1\"", "\" N\""},
+      "RowDefault"]},
+    {"\<\"\"\>"},
+    {
+     TemplateBox[{
+      "\"  \:2461 \:65b9\:7a0b\:6b8b\:5dee / max|M q\:0308|   = \"", 
+       "\"7.205e-10\"", "\"     [\:5224\:636e < 1e-8]\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"     \:65b9\:7a0b\:6b8b\:5dee / max|K q|    = \"", "\"2.005e-10\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"     \:65b9\:7a0b\:6b8b\:5dee / max|F_ext|  = \"", "\"1.735e-9\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"     \:5404\:9879\:91cf\:7ea7 : |M q\:0308| = \"", "\"1.686e1\"", 
+       "\" N ,  |K q| = \"", "\"6.059e1\"", "\" N ,  |B\:1d40F| = \"", 
+       "\"6.059e1\"", "\" N ,  |C q\:0307| = \"", "\"1.902e0\"", 
+       "\" N ,  |F_ext| = \"", "\"7.000e0\"", "\" N\""},
+      "RowDefault"]},
+    {"\<\"\"\>"},
+    {
+     TemplateBox[{
+      "\"  \:2462 \:9010\:81ea\:7531\:5ea6\:6b8b\:5dee : \:4e0a\:754c \"", 
+       "\"1.215e-8\"", "\" (DOF \"", "\"7\"", "\")    \:4e0b\:754c \"", 
+       "\"0\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"     \[Omega]c/\[Omega]s \:672b\:503c = \"", "\"2.857e-1\"", 
+       "\"   (Willis 1/i = \"", "\"2.857e-1\"", "\")\"", 
+       "\"    t>0.05s \:6700\:5927\:504f\:5dee = \"", "\"4.616e-5\""},
+      "RowDefault"]}
+   },
+   DefaultBaseStyle->"Column",
+   GridBoxAlignment->{"Columns" -> {{Left}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Column"]], "Print",
+ CellChangeTimes->{4.0026068748852024`*^9},
+ CellLabel->
+  "\:6b63\:5728\:8ba1\:7b97In[1]:=",ExpressionUUID->"1a98d97a-61de-5440-b8b3-\
+c22840c22a98"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Step 8 \[CenterDot] \:80fd\:91cf\:5e73\:8861\:4e0e C \:77e9\:9635\:72ec\:7acb\
+\:91cd\:6784\:ff08V16\:ff09\[LongDash] \:542b\:65f6\:53d8\:521a\:5ea6\:6ce8\
+\:5165\:9879 + \:5bf9\:7167\:5b9e\:9a8c
+\
+\>", "Section",
+ CellID->1818510133,ExpressionUUID->"b17b4602-34cb-5043-b113-e1c8ea195d3f"],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+(* (A) C \:77e9\:9635\:4ece\:7269\:7406\:91cf\:72ec\:7acb\:91cd\:5efa\:ff1a\
+beta \:7531 WL \:81ea\:5df1\:7684\:5e7f\:4e49\:7279\:5f81\:503c\:7b97\:51fa\
+\:ff0c\:4e0d\:8bfb meta *)
+km8[\"sp\"] = ks7 (1 + (eaE7 - 1.)); km8[\"rp\"] = ks7 (1 + (eaI7 - 1.));
+Kmesh8 = pk7[Total[Table[km8[\"sp\"] Outer[Times, B7[[2 i - 1]], B7[[2 i - 1]]]
+      + km8[\"rp\"] Outer[Times, B7[[2 i]], B7[[2 i]]], {i, Np7}]]];
+Ktot8 = pk7[K7 + Kmesh8];
+eg8 = Eigensystem[{Ktot8, M7}];
+ord8 = Ordering[eg8[[1]]];
+ev8 = eg8[[1, ord8]]; vec8 = eg8[[2, ord8]];
+sel8 = Select[Range[Length[ev8]], ev8[[#]] > 1. &];
+om8 = Sqrt[ev8[[sel8]]]; vec8 = vec8[[sel8]];
+nMode8 = Length[om8]; w18 = om8[[1]];
+zetaB8 = p7[\"damp\"][\"zeta_b\"];
+beta8 = 2. zetaB8/w18;
+errC8 = Norm[C7 - beta8 K7, \"Frobenius\"]/Norm[C7, \"Frobenius\"];
+cm8[\"sp\"] = 2 zv7 Sqrt[km8[\"sp\"] me7[\"sp\"]];
+cm8[\"rp\"] = 2 zv7 Sqrt[km8[\"rp\"] me7[\"rp\"]];
+Cmesh8 = pk7[Total[Table[cm8[\"sp\"] Outer[Times, B7[[2 i - 1]], B7[[2 i - 1]]]
+      + cm8[\"rp\"] Outer[Times, B7[[2 i]], B7[[2 i]]], {i, Np7}]]];
+Ctot8 = pk7[C7 + Cmesh8];
+zeta8[phi_, w_] := (phi . (Ctot8 . phi))/(2. w (phi . (M7 . phi)));
+kMid8 = Quotient[nMode8, 2];
+
+(* (B) \:80fd\:91cf\:5e73\:8861\:ff1aE = 1/2 v'Mv + 1/2 q'Kq + 1/2 \
+\[CapitalSigma] k(d-e)^2 *)
+tab8 = Table[Module[{mv, kv, cv, ee, ed, dk, dl, dld, Ek, Ev, Em, dEdt,
+    Pe, Pc, Pm, PiE, PiK},
+   mv = mvec7[T7[[k]]];
+   kv = mv[[1]]; cv = mv[[2]]; ee = mv[[3]]; ed = mv[[4]]; dk = mv[[5]];
+   dl = B7 . Q7[[k]]; dld = B7 . V7[[k]];
+   Ek = 0.5 V7[[k]] . (M7 . V7[[k]]);
+   Ev = 0.5 Q7[[k]] . (K7 . Q7[[k]]);
+   Em = 0.5 Total[kv (dl - ee)^2];
+   dEdt = V7[[k]] . (M7 . A7[[k]]) + V7[[k]] . (K7 . Q7[[k]])
+      + Total[kv (dl - ee) (dld - ed)] + 0.5 Total[dk (dl - ee)^2];
+   Pe = V7[[k]] . Fext7[[k]];
+   Pc = -V7[[k]] . (C7 . V7[[k]]);
+   Pm = -Total[cv dld (dld - ed)];
+   PiE = -Total[kv (dl - ee) ed];
+   PiK = 0.5 Total[dk (dl - ee)^2];
+   {Ek + Ev + Em, dEdt, Pe, Pc, Pm, PiE, PiK,
+    dEdt - (Pe + Pc + Pm + PiE + PiK), dEdt - (Pe + Pc + Pm)}], {k, n7}];
+tab8 = pk7[tab8];
+col8[j_] := tab8[[All, j]];
+resF8 = col8[8]; resN8 = col8[9];
+scDE8 = Max[Abs[col8[2]]];
+h8 = T7[[2]] - T7[[1]];
+trap8[c_] := h8 (Total[c] - 0.5 (First[c] + Last[c]));
+E0v = First[col8[1]]; E1v = Last[col8[1]];
+
+Print[Column[{
+   Style[\"(A) C \:77e9\:9635\:4ece\:7269\:7406\:91cf\:91cd\:5efa\", Bold, 12],
+   Row[{\"   f1 = \", f7[w18/(2 Pi)], \" Hz     beta = 2\[Zeta]b/\[Omega]1 = \
+\", f7[beta8], \" s\"}],
+   Row[{\"   ||C_rebuild - C_struct||/||C_struct|| = \", f7[errC8], \"     [\
+\:5224\:636e < 1e-12]\"}],
+   Row[{\"   \:6a21\:6001\:963b\:5c3c\:6bd4 : \[Zeta](f1) = \", \
+f7[zeta8[vec8[[1]], om8[[1]]]],
+     \"   \[Zeta](f_mid) = \", f7[zeta8[vec8[[kMid8]], om8[[kMid8]]]],
+     \"   \[Zeta](fmax) = \", f7[zeta8[vec8[[nMode8]], om8[[nMode8]]]]}],
+   \"\",
+   Style[\"(B) \:80fd\:91cf\:5e73\:8861\:ff08\:5b8c\:6574\:9879\:ff09\", \
+Bold, 12],
+   Row[{\"   |dE/dt| = \", f7[scDE8], \" W     max|resid| = \", \
+f7[Max[Abs[resF8]]], \" W\"}],
+   Row[{\"   max|resid| / max|dE/dt| = \", f7[Max[Abs[resF8]]/scDE8], \"     \
+[\:5224\:636e < 1e-8]\"}],
+   Row[{\"   E(t=0) = \", f7[E0v], \" J     E(t_end) = \", f7[E1v], \" J\"}],
+   \"\",
+   Style[\"(C) \:5bf9\:7167\:5b9e\:9a8c\:ff1a\:53bb\:6389\:4e24\:4e2a\:6ce8\
+\:5165\:9879\", Bold, 12],
+   Row[{\"   \:4fdd\:7559\:6ce8\:5165\:9879 = \", f7[Max[Abs[resF8]]/scDE8],
+     \"     \:53bb\:6389\:6ce8\:5165\:9879 = \", f7[Max[Abs[resN8]]/scDE8],
+     \"     \:653e\:5927 \", f7[Max[Abs[resN8]]/Max[Abs[resF8]], \" \
+\:500d\"]}],
+   \"\",
+   Style[\"(D) \:529f\:7387\:79ef\:5206\:ff08\:68af\:5f62\:ff09\", Bold, 12],
+   Row[{\"   \[Integral]P_ext = \", f7[trap8[col8[3]]], \" J    \
+\[Integral]P_C = \", f7[trap8[col8[4]]],
+     \" J    \[Integral]P_mesh = \", f7[trap8[col8[5]]], \" J\"}],
+   Row[{\"   \[Integral]P_inj_e = \", f7[trap8[col8[6]]], \" J    \
+\[Integral]P_inj_k = \", f7[trap8[col8[7]]], \" J\"}],
+   Row[{\"   \[Integral]dE/dt = \", f7[trap8[col8[2]]], \" J    E(t_end)-E(0) \
+= \", f7[E1v - E0v],
+     \" J    \:95ed\:5408\:8bef\:5dee = \", f7[Abs[trap8[col8[2]] - (E1v - \
+E0v)]/Abs[E1v - E0v]]}],
+   Row[{\"   \:603b\:8017\:6563 = \", f7[trap8[col8[4]] + trap8[col8[5]]], \" \
+J   (\:5e94\:4e3a\:8d1f)\"}]
+   }]];\
+\>", "Input",
+ CellLabel->"In[52]:=",
+ CellID->1015271328,ExpressionUUID->"4f685c76-6e4d-f841-b622-3838be5828d6"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     StyleBox["\<\"(A) C \:77e9\:9635\:4ece\:7269\:7406\:91cf\:91cd\:5efa\"\>",
+      StripOnInput->False,
+      FontSize->12,
+      FontWeight->Bold]},
+    {
+     TemplateBox[{
+      "\"   f1 = \"", "\"1.545e3\"", 
+       "\" Hz     beta = 2\[Zeta]b/\[Omega]1 = \"", "\"4.121e-6\"", "\" s\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"   ||C_rebuild - C_struct||/||C_struct|| = \"", "\"2.909e-15\"", 
+       "\"     [\:5224\:636e < 1e-12]\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"   \:6a21\:6001\:963b\:5c3c\:6bd4 : \[Zeta](f1) = \"", 
+       "\"2.000e-2\"", "\"   \[Zeta](f_mid) = \"", "\"1.178e-1\"", 
+       "\"   \[Zeta](fmax) = \"", "\"2.255e-1\""},
+      "RowDefault"]},
+    {"\<\"\"\>"},
+    {
+     StyleBox["\<\"(B) \:80fd\:91cf\:5e73\:8861\:ff08\:5b8c\:6574\:9879\:ff09\
+\"\>",
+      StripOnInput->False,
+      FontSize->12,
+      FontWeight->Bold]},
+    {
+     TemplateBox[{
+      "\"   |dE/dt| = \"", "\"2.450e1\"", "\" W     max|resid| = \"", 
+       "\"2.687e-8\"", "\" W\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"   max|resid| / max|dE/dt| = \"", "\"1.097e-9\"", 
+       "\"     [\:5224\:636e < 1e-8]\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"   E(t=0) = \"", "\"1.453e-33\"", "\" J     E(t_end) = \"", 
+       "\"3.349e-1\"", "\" J\""},
+      "RowDefault"]},
+    {"\<\"\"\>"},
+    {
+     StyleBox["\<\"(C) \:5bf9\:7167\:5b9e\:9a8c\:ff1a\:53bb\:6389\:4e24\:4e2a\
+\:6ce8\:5165\:9879\"\>",
+      StripOnInput->False,
+      FontSize->12,
+      FontWeight->Bold]},
+    {
+     TemplateBox[{
+      "\"   \:4fdd\:7559\:6ce8\:5165\:9879 = \"", "\"1.097e-9\"", 
+       "\"     \:53bb\:6389\:6ce8\:5165\:9879 = \"", "\"6.476e-4\"", 
+       "\"     \:653e\:5927 \"", 
+       RowBox[{"f7", "[", 
+         RowBox[{"590424.9838217356`", ",", "\" \:500d\""}], "]"}]},
+      "RowDefault"]},
+    {"\<\"\"\>"},
+    {
+     StyleBox["\<\"(D) \:529f\:7387\:79ef\:5206\:ff08\:68af\:5f62\:ff09\"\>",
+      StripOnInput->False,
+      FontSize->12,
+      FontWeight->Bold]},
+    {
+     TemplateBox[{
+      "\"   \[Integral]P_ext = \"", "\"3.349e-1\"", 
+       "\" J    \[Integral]P_C = \"", "\"-2.861e-6\"", 
+       "\" J    \[Integral]P_mesh = \"", "\"-2.253e-6\"", "\" J\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"   \[Integral]P_inj_e = \"", "\"1.396e-5\"", 
+       "\" J    \[Integral]P_inj_k = \"", "\"2.036e-6\"", "\" J\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"   \[Integral]dE/dt = \"", "\"3.349e-1\"", 
+       "\" J    E(t_end)-E(0) = \"", "\"3.349e-1\"", 
+       "\" J    \:95ed\:5408\:8bef\:5dee = \"", "\"7.538e-5\""},
+      "RowDefault"]},
+    {
+     TemplateBox[{
+      "\"   \:603b\:8017\:6563 = \"", "\"-5.114e-6\"", 
+       "\" J   (\:5e94\:4e3a\:8d1f)\""},
+      "RowDefault"]}
+   },
+   DefaultBaseStyle->"Column",
+   GridBoxAlignment->{"Columns" -> {{Left}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Column"]], "Print",
+ CellChangeTimes->{4.0026068775520935`*^9},
+ CellLabel->
+  "\:6b63\:5728\:8ba1\:7b97In[52]:=",ExpressionUUID->"2bd7717b-1147-3f40-b38c-\
+f7fab3b5e38d"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1536, 795.5999999999999},
+WindowMargins->{{
+  Automatic, -5.399999999999864}, {-5.399999999999977, Automatic}},
+WindowTitle->"NGW \:9010\:6b65\:9a8c\:8bc1",
+Magnification:>0.9 Inherited,
+FrontEndVersion->"14.0 for Microsoft Windows (64-bit) (2023\:5e7412\:670812\
+\:65e5)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"83d34f77-cce0-b54b-92bc-e032149af78c"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[622, 23, 154, 1, 88, "Title",ExpressionUUID->"a1764f0c-2859-144a-ba6c-d614d3959df5",
+ CellID->1800417075],
+Cell[CellGroupData[{
+Cell[801, 28, 197, 2, 60, "Section",ExpressionUUID->"9e51be3b-5649-0345-9e1d-abe4f9f40ed6",
+ CellID->926149930],
+Cell[CellGroupData[{
+Cell[1023, 34, 1567, 33, 378, "Input",ExpressionUUID->"ab7b1fa1-b620-ac44-a355-f4575fdfbfc1",
+ CellID->1650021772],
+Cell[2593, 69, 2548, 76, 204, "Print",ExpressionUUID->"8ac991a2-a10b-034e-bc54-bc593278fd50"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5190, 151, 204, 2, 60, "Section",ExpressionUUID->"16664372-192a-6642-85b5-31811a7e9206",
+ CellID->279579483],
+Cell[CellGroupData[{
+Cell[5419, 157, 2827, 55, 592, "Input",ExpressionUUID->"eed373d1-cc24-4e49-a106-fdb4616abe2b",
+ CellID->1366493896],
+Cell[8249, 214, 2349, 69, 207, "Print",ExpressionUUID->"3ed1ccd3-45a9-bd4d-81d9-bc20fa6ad034"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[10647, 289, 231, 3, 60, "Section",ExpressionUUID->"a58b3376-587e-004d-b402-9e63a8ed0be7",
+ CellID->1580218635],
+Cell[CellGroupData[{
+Cell[10903, 296, 2558, 52, 576, "Input",ExpressionUUID->"796a9b82-cb55-5543-a451-a02c8ee72b71",
+ CellID->1553214992],
+Cell[13464, 350, 1994, 62, 231, "Print",ExpressionUUID->"4fc5edc1-e09a-7c49-8998-2c1a74a83277"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[15507, 418, 263, 3, 60, "Section",ExpressionUUID->"8893c91e-ed1f-0245-8f12-cc0218b72897",
+ CellID->533079922],
+Cell[CellGroupData[{
+Cell[15795, 425, 3311, 66, 711, "Input",ExpressionUUID->"6232e8c0-e556-024e-b2fc-2040ef68f035",
+ CellID->1023072741],
+Cell[19109, 493, 2262, 65, 205, "Print",ExpressionUUID->"3d08ad3a-e19c-5443-afdd-04b9205ef959"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[21420, 564, 218, 2, 59, "Section",ExpressionUUID->"3d328696-c3aa-f549-85e0-702c614894b6",
+ CellID->992708890],
+Cell[CellGroupData[{
+Cell[21663, 570, 4384, 86, 964, "Input",ExpressionUUID->"09a745f0-0c93-744b-ae50-4f94d9fcaf5e",
+ CellID->1509694309],
+Cell[26050, 658, 1935, 36, 339, "Print",ExpressionUUID->"447ab44f-c949-af4f-9b25-66bd2d9adb6a"],
+Cell[27988, 696, 99, 1, 29, "Output",ExpressionUUID->"d7599af4-454c-6f4c-88ad-a8f54b7b63d8"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[28136, 703, 223, 3, 59, "Section",ExpressionUUID->"cdcd5f9d-5f73-dc48-a5db-4333f7f5b821",
+ CellID->757258634],
+Cell[CellGroupData[{
+Cell[28384, 710, 2705, 58, 636, "Input",ExpressionUUID->"335a8fda-1f02-604a-aac0-2cf3eda72ed2",
+ CellID->421743788],
+Cell[31092, 770, 1340, 26, 284, "Print",ExpressionUUID->"6c8a27ba-fca0-3440-bd30-c3dc6aa083d2"],
+Cell[32435, 798, 99, 1, 29, "Output",ExpressionUUID->"d0281b56-1f84-7246-ad09-95056d8cc81b"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[32583, 805, 271, 6, 94, "Section",ExpressionUUID->"0c8ea2cd-5842-a146-9231-f3994af31632",
+ CellID->995204252],
+Cell[CellGroupData[{
+Cell[32879, 815, 5782, 122, 1418, "Input",ExpressionUUID->"1570ff18-b33b-e348-b639-0224793703ac",
+ CellID->636842791],
+Cell[38664, 939, 2179, 60, 172, "Print",ExpressionUUID->"1a98d97a-61de-5440-b8b3-c22840c22a98"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[40892, 1005, 299, 6, 94, "Section",ExpressionUUID->"b17b4602-34cb-5043-b113-e1c8ea195d3f",
+ CellID->1818510133],
+Cell[CellGroupData[{
+Cell[41216, 1015, 4367, 93, 1144, "Input",ExpressionUUID->"4f685c76-6e4d-f841-b622-3838be5828d6",
+ CellID->1015271328],
+Cell[45586, 1110, 3167, 96, 284, "Print",ExpressionUUID->"2bd7717b-1147-3f40-b38c-f7fab3b5e38d"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
